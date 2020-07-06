@@ -22,3 +22,17 @@ export const spliceArray = (
 ) => {
   return [...array].slice(startIndex, endIndex);
 };
+
+export const miliSecToTime = (ms: number) => {
+  let hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  let min = Math.floor((ms / (1000 * 60)) % 60);
+  let sec = Math.floor((ms / 1000) % 60);
+
+  if (hours < 24) {
+    return hours + " hrs ago";
+  } else if (min < 60) {
+    return min + " min ago";
+  } else if (sec < 60) {
+    return sec + " sec ago";
+  }
+};

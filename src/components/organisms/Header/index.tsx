@@ -10,8 +10,20 @@ import "./header.scss";
 const Header = () => {
   const LinkArray: NavigationLinkIF[] = [
     {
+      link: "/newest",
+      label: "new",
+    },
+    {
       link: "/newcomments",
       label: "comments",
+    },
+    {
+      link: "/ask",
+      label: "ask",
+    },
+    {
+      link: "/show",
+      label: "show",
     },
     {
       link: "/jobs",

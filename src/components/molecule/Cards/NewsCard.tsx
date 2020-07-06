@@ -2,36 +2,27 @@ import React, { useState, useEffect } from "react";
 
 import { defer } from "rxjs";
 
-import classes from "./news-card.module.scss";
+import classes from "./card.module.scss";
 
-import { getDomainName } from "../../../utils";
+import { getDomainName, miliSecToTime } from "../../../utils";
 
 import Text from "../../atoms/Text";
 import NavigationLink from "../NavigationLink";
+import { NewsResponse } from "../../../interfaces";
 
 interface Props {
   subUrl: string;
-  index?: string | number;
-}
-
-interface Response {
-  title: string;
-  url: string;
-  score: number;
-  by: string;
-  kids: number[];
-  time: number;
-  id: number;
+  index?: string | number | undefined;
 }
 
 const NewsCard = ({ subUrl, index }: Props) => {
-  const [news, setNews] = useState<Response>();
+  const [news, setNews] = useState<NewsResponse>();
   const [cardLoader, setCardLoader] = useState<boolean>(true);
 
   useEffect(() => {
     const subscription = defer(() =>
       fetch(subUrl).then((res) => res.json())
-    ).subscribe((resp: Response) => {
+    ).subscribe((resp: NewsResponse) => {
       setNews(resp);
       setCardLoader(false);
     });
@@ -49,7 +40,7 @@ const NewsCard = ({ subUrl, index }: Props) => {
     <>
       <tr>
         <td align="right">
-          <Text label={`${index}.`} fontColor="gray" />
+          {index && <Text label={`${index}.`} fontColor="gray" />}
         </td>
         <td>
           <a
@@ -60,12 +51,14 @@ const NewsCard = ({ subUrl, index }: Props) => {
           >
             <Text element="text" label={news.title} />
           </a>
-          <Text
-            fontColor="gray"
-            fontSize="sm"
-            element="span"
-            label={` (${getDomainName(news.url || "")})`}
-          />
+          {news.url && (
+            <Text
+              fontColor="gray"
+              fontSize="sm"
+              element="span"
+              label={` (${getDomainName(news.url)})`}
+            />
+          )}
         </td>
       </tr>
       <tr>
@@ -81,7 +74,7 @@ const NewsCard = ({ subUrl, index }: Props) => {
             element="span"
             fontSize="xs"
             fontColor="gray"
-            label={` 2 hours ago`}
+            label={` ${miliSecToTime(news.time || 0)}`}
           />
           <Text
             element="span"

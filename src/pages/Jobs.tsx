@@ -14,7 +14,7 @@ interface ParamTypes {
   };
 }
 
-const Home = () => {
+const Jobs = () => {
   const location = useLocation<ParamTypes>();
   const searchQuery = new URLSearchParams(location.search);
 
@@ -29,7 +29,7 @@ const Home = () => {
   useEffect(() => {
     const subscription = defer(() =>
       fetch(
-        "https://hacker-news.firebaseio.com/v0/topstories.json"
+        "https://hacker-news.firebaseio.com/v0/jobstories.json"
       ).then((res) => res.json())
     ).subscribe((resp) => {
       setNewsIdArray(resp);
@@ -62,12 +62,13 @@ const Home = () => {
           subUrl="https://hacker-news.firebaseio.com/v0/item"
           newsArray={newsIdArrayComp}
           indexStart={startSplice}
-          nextPageQuery={`/news?p=${currentPage ? currentPage + 1 : 2}`}
+          nextPageQuery={`/jobs?p=${currentPage ? currentPage + 1 : 2}`}
           isNextPage={currentPage < total}
+          type="jobs"
         />
       )}
     </>
   );
 };
 
-export default Home;
+export default Jobs;
