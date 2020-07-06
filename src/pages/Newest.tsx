@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
 import { spliceArray } from "../utils";
+import { BASE_SUB_URL, BASE_URL } from "../config";
 
 interface ParamTypes {
   search?: {
@@ -28,9 +29,7 @@ const Newest = () => {
 
   useEffect(() => {
     const subscription = defer(() =>
-      fetch(
-        "https://hacker-news.firebaseio.com/v0/newstories.json"
-      ).then((res) => res.json())
+      fetch(`${BASE_URL}/newstories.json`).then((res) => res.json())
     ).subscribe((resp) => {
       setNewsIdArray(resp);
       setPageLoader(false);
@@ -59,7 +58,7 @@ const Newest = () => {
     <>
       {!pageLoader && (
         <CardsContainer
-          subUrl="https://hacker-news.firebaseio.com/v0/item"
+          subUrl={BASE_SUB_URL}
           newsArray={newsIdArrayComp}
           indexStart={startSplice}
           nextPageQuery={`/newest?p=${currentPage ? currentPage + 1 : 2}`}

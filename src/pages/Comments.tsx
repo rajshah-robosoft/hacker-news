@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 
 import CommentsContainer from "../components/organisms/CommentsContainer";
 import { NewsResponse } from "../interfaces";
+import { BASE_SUB_URL } from "../config";
 
 interface ParamTypes {
   search?: {
@@ -23,9 +24,7 @@ const Comments = () => {
 
   useEffect(() => {
     const subscription = defer(() =>
-      fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${mainId}.json`
-      ).then((res) => res.json())
+      fetch(`${BASE_SUB_URL}/${mainId}.json`).then((res) => res.json())
     ).subscribe((resp) => {
       setCommentsIdArray(resp);
       setPageLoader(false);
@@ -41,7 +40,7 @@ const Comments = () => {
       {!pageLoader && commentsIdObj && (
         <CommentsContainer
           commentsIdObj={commentsIdObj}
-          subUrl="https://hacker-news.firebaseio.com/v0/item"
+          subUrl={BASE_SUB_URL}
         />
       )}
     </>

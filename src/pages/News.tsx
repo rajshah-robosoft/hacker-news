@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
 import { spliceArray } from "../utils";
+import { BASE_SUB_URL, BASE_URL } from "../config";
 
 interface ParamTypes {
   search?: {
@@ -28,9 +29,7 @@ const Home = () => {
 
   useEffect(() => {
     const subscription = defer(() =>
-      fetch(
-        "https://hacker-news.firebaseio.com/v0/topstories.json"
-      ).then((res) => res.json())
+      fetch(`${BASE_URL}/topstories.json`).then((res) => res.json())
     ).subscribe((resp) => {
       setNewsIdArray(resp);
       setPageLoader(false);
@@ -50,16 +49,14 @@ const Home = () => {
     setCurrentPage(query);
     newArr.length > 0 && setNewsIdArrayComp(newArr);
 
-    setTimeout(() => {
-      setPageLoader(false);
-    }, 0);
+    setPageLoader(false);
   }, [newsIdArray, searchQuery.get("p")]);
 
   return (
     <>
       {!pageLoader && (
         <CardsContainer
-          subUrl="https://hacker-news.firebaseio.com/v0/item"
+          subUrl={BASE_SUB_URL}
           newsArray={newsIdArrayComp}
           indexStart={startSplice}
           nextPageQuery={`/news?p=${currentPage ? currentPage + 1 : 2}`}

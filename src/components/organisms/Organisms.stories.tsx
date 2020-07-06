@@ -10,6 +10,7 @@ import Header from "./Header";
 import CardsContainer from "./CardsContainer";
 import CommentsContainer from "./CommentsContainer";
 import Footer from "./footer";
+import { BASE_SUB_URL } from "../../config";
 
 storiesOf("Organisms", module)
   .addDecorator(StoryRouter())
@@ -17,7 +18,7 @@ storiesOf("Organisms", module)
   .add("Footer", () => <Footer />)
   .add("CardsContainer", () => (
     <CardsContainer
-      subUrl="https://hacker-news.firebaseio.com/v0/item"
+      subUrl={BASE_SUB_URL}
       newsArray={[23734093, 23737266, 23730629]}
       indexStart={0}
       nextPageQuery="/news"
@@ -26,7 +27,7 @@ storiesOf("Organisms", module)
   ))
   .add("CommentsContainer", () => (
     <CommentsContainer
-      subUrl="https://hacker-news.firebaseio.com/v0/item"
+      subUrl={BASE_SUB_URL}
       commentsIdObj={{
         by: "jesseduffield",
         id: 23735991,
