@@ -49,9 +49,7 @@ const Newest = () => {
     setCurrentPage(query);
     newArr.length > 0 && setNewsIdArrayComp(newArr);
 
-    setTimeout(() => {
-      setPageLoader(false);
-    }, 0);
+    setPageLoader(false);
   }, [newsIdArray, searchQuery.get("p")]);
 
   return (
