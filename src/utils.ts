@@ -36,3 +36,15 @@ export const miliSecToTime = (ms: number) => {
     return sec + " sec ago";
   }
 };
+
+export const makeQueryParams = (urlSearch: string): URLSearchParams => {
+  return new URLSearchParams(urlSearch);
+};
+
+export const getPageFromQueryParam = (
+  urlSearch: string,
+  searchObjKey: string
+): number => {
+  const queryValue = Number(makeQueryParams(urlSearch).get(searchObjKey));
+  return queryValue ? queryValue : 1;
+};

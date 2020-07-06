@@ -6,7 +6,7 @@ import { defer } from "rxjs";
 import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
-import { spliceArray } from "../utils";
+import { spliceArray, getPageFromQueryParam } from "../utils";
 import { BASE_SUB_URL, BASE_URL } from "../config";
 
 interface ParamTypes {
@@ -17,11 +17,10 @@ interface ParamTypes {
 
 const Newest = () => {
   const location = useLocation<ParamTypes>();
-  const searchQuery = new URLSearchParams(location.search);
 
   const [pageLoader, setPageLoader] = useState<boolean>(true);
-  const [newsIdArray, setNewsIdArray] = useState<number[]>([]);
-  const [newsIdArrayComp, setNewsIdArrayComp] = useState<number[]>([]);
+  const [idArray, setIdArray] = useState<number[]>([]);
+  const [idArrayComp, setIdArrayComp] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [total, setTotal] = useState(0);
 
@@ -31,7 +30,7 @@ const Newest = () => {
     const subscription = defer(() =>
       fetch(`${BASE_URL}/newstories.json`).then((res) => res.json())
     ).subscribe((resp) => {
-      setNewsIdArray(resp);
+      setIdArray(resp);
       setPageLoader(false);
       setTotal(Math.ceil(resp.length / 30));
     });
@@ -43,21 +42,21 @@ const Newest = () => {
 
   useEffect(() => {
     setPageLoader(true);
-    let query = Number(searchQuery.get("p")) ? Number(searchQuery.get("p")) : 1;
-    let newArr = spliceArray(newsIdArray, (query - 1) * 30, query * 30);
+    let query = getPageFromQueryParam(location.search, "p");
+    let newArr = spliceArray(idArray, (query - 1) * 30, query * 30);
 
     setCurrentPage(query);
-    newArr.length > 0 && setNewsIdArrayComp(newArr);
+    newArr.length > 0 && setIdArrayComp(newArr);
 
     setPageLoader(false);
-  }, [newsIdArray, searchQuery.get("p")]);
+  }, [idArray, location.search]);
 
   return (
     <>
       {!pageLoader && (
         <CardsContainer
           subUrl={BASE_SUB_URL}
-          newsArray={newsIdArrayComp}
+          newsArray={idArrayComp}
           indexStart={startSplice}
           nextPageQuery={`/newest?p=${currentPage ? currentPage + 1 : 2}`}
           isNextPage={currentPage < total}
