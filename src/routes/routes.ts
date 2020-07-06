@@ -7,6 +7,10 @@ import Newest from "../pages/Newest";
 import Ask from "../pages/Ask";
 import Show from "../pages/Show";
 import Jobs from "../pages/Jobs";
+import Guidelines from "../pages/Guidelines";
+import FAQ from "../pages/FAQ";
+import Security from "../pages/Security";
+import Bookmarklet from "../pages/Bookmarklet";
 
 export interface ROUTE {
   path: string;
@@ -49,6 +53,26 @@ const ROUTES: ROUTE[] = [
     path: "/jobs",
     exact: true,
     component: Jobs,
+  },
+  {
+    path: "/guidelines",
+    exact: true,
+    component: Guidelines,
+  },
+  {
+    path: "/faq",
+    exact: true,
+    component: FAQ,
+  },
+  {
+    path: "/security",
+    exact: true,
+    component: Security,
+  },
+  {
+    path: "/bookmarklet",
+    exact: true,
+    component: Bookmarklet,
   },
 ];
 
