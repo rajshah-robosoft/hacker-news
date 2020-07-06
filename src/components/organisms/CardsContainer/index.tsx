@@ -1,10 +1,14 @@
 import React from "react";
 
-import NewsCard from "../../molecule/Cards/NewsCard";
 import NavigationLink from "../../molecule/NavigationLink";
-import NewestCard from "../../molecule/Cards/NewestCard";
-import AskCard from "../../molecule/Cards/AskCard";
-import JobsCard from "../../molecule/Cards/JobsCard";
+
+import {
+  NewsCardClass,
+  NewestCardClass,
+  AskCardClass,
+  ShowCardClass,
+  JobsCardClass,
+} from "./classes";
 
 interface Props {
   newsArray: number[];
@@ -26,51 +30,44 @@ const CardsContainer = ({
   let renderNews =
     Array.isArray(newsArray) &&
     newsArray.map((item, index) => {
-      if (type === "news") {
-        return (
-          <NewsCard
-            index={indexStart + (index + 1)}
-            key={index}
-            subUrl={`${subUrl}/${item}.json`}
-          />
-        );
-      }
-      if (type === "newest") {
-        return (
-          <NewestCard
-            index={indexStart + (index + 1)}
-            key={index}
-            subUrl={`${subUrl}/${item}.json`}
-          />
-        );
-      }
-      if (type === "ask") {
-        return (
-          <AskCard
-            index={indexStart + (index + 1)}
-            key={index}
-            subUrl={`${subUrl}/${item}.json`}
-          />
-        );
-      }
-      if (type === "show") {
-        return (
-          <AskCard
-            index={indexStart + (index + 1)}
-            key={index}
-            subUrl={`${subUrl}/${item}.json`}
-            isShow={true}
-          />
-        );
-      }
-      if (type === "jobs") {
-        return (
-          <JobsCard
-            index={indexStart + (index + 1)}
-            key={index}
-            subUrl={`${subUrl}/${item}.json`}
-          />
-        );
+      switch (type) {
+        case "news":
+          return new NewsCardClass(
+            indexStart + (index + 1),
+            index,
+            `${subUrl}/${item}.json`
+          ).renderCard();
+
+        case "newest":
+          return new NewestCardClass(
+            indexStart + (index + 1),
+            index,
+            `${subUrl}/${item}.json`
+          ).renderCard();
+
+        case "ask":
+          return new AskCardClass(
+            indexStart + (index + 1),
+            index,
+            `${subUrl}/${item}.json`
+          ).renderCard();
+
+        case "show":
+          return new ShowCardClass(
+            indexStart + (index + 1),
+            index,
+            `${subUrl}/${item}.json`
+          ).renderCard();
+
+        case "jobs":
+          return new JobsCardClass(
+            indexStart + (index + 1),
+            index,
+            `${subUrl}/${item}.json`
+          ).renderCard();
+
+        default:
+          break;
       }
     });
 
