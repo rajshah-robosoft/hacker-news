@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
-import { makeDeferGetApiCall } from "../rxjs-methods";
 import { spliceArray, getPageFromQueryParam } from "../utils";
-import { BASE_SUB_URL, API } from "../config";
+import { BASE_SUB_URL } from "../config";
+import { newsGetApi } from "../services";
 
 interface ParamTypes {
   search?: {
@@ -26,13 +26,11 @@ const Home = () => {
   let startSplice = (currentPage - 1) * 30;
 
   useEffect(() => {
-    const subscription = makeDeferGetApiCall(API.news).subscribe(
-      (resp: any) => {
-        setIdArray(resp);
-        setPageLoader(false);
-        setTotal(Math.ceil(resp.length / 30));
-      }
-    );
+    const subscription = newsGetApi().subscribe((resp: any) => {
+      setIdArray(resp);
+      setPageLoader(false);
+      setTotal(Math.ceil(resp.length / 30));
+    });
 
     return () => {
       subscription.unsubscribe();

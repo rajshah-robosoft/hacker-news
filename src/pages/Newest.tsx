@@ -5,8 +5,8 @@ import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
 import { spliceArray, getPageFromQueryParam } from "../utils";
-import { BASE_SUB_URL, API } from "../config";
-import { makeDeferGetApiCall } from "../rxjs-methods";
+import { BASE_SUB_URL } from "../config";
+import { newestGetApi } from "../services";
 
 interface ParamTypes {
   search?: {
@@ -26,7 +26,7 @@ const Newest = () => {
   let startSplice = (currentPage - 1) * 30;
 
   useEffect(() => {
-    const subscription = makeDeferGetApiCall(API.newest).subscribe((resp) => {
+    const subscription = newestGetApi().subscribe((resp) => {
       setIdArray(resp);
       setPageLoader(false);
       setTotal(Math.ceil(resp.length / 30));
