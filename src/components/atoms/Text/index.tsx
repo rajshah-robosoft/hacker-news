@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./text.scss";
+import { TextElementClass, SpanElementClass, DivElementClass } from "./classes";
 
 type fontSizeType = "xs" | "sm" | "base";
 type textColorType = "inherit" | "white" | "gray" | "black";
@@ -27,15 +28,16 @@ const Text = ({
   let fontClass = `text--${fontSize} text--${fontColor} text--${fontWeight}`;
   let mainClass = `${fontClass} ${className}`;
 
-  if (element === "text") {
-    return <>{label}</>;
-  }
+  switch (element) {
+    case "text":
+      return new TextElementClass(label).renderElement();
 
-  if (element === "span") {
-    return <span className={mainClass}>{label}</span>;
-  }
+    case "span":
+      return new SpanElementClass(label, mainClass).renderElement();
 
-  return <div className={mainClass}>{label}</div>;
+    default:
+      return new DivElementClass(label, mainClass).renderElement();
+  }
 };
 
 export default Text;

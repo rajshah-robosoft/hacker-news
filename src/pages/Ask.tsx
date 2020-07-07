@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { defer } from "rxjs";
-
 // Routing
 import { useLocation } from "react-router-dom";
 
