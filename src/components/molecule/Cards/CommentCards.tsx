@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { defer } from "rxjs";
+
 import Text from "../../atoms/Text";
 import { miliSecToTime } from "../../../utils";
+import { makeDeferGetApiCall } from "../../../rxjs-methods";
 
 interface Props {
   subUrl: string;
@@ -24,12 +25,12 @@ const CommentCard = ({ subUrl, id, className = "" }: Props) => {
   const [cardLoader, setCardLoader] = useState<boolean>(true);
 
   useEffect(() => {
-    const subscription = defer(() =>
-      fetch(`${subUrl}/${id}.json`).then((res) => res.json())
-    ).subscribe((resp: Response) => {
-      setComments(resp);
-      setCardLoader(false);
-    });
+    const subscription = makeDeferGetApiCall(`${subUrl}/${id}.json`).subscribe(
+      (resp: Response) => {
+        setComments(resp);
+        setCardLoader(false);
+      }
+    );
 
     return () => {
       subscription.unsubscribe();

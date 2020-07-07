@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { defer } from "rxjs";
-
 import classes from "./card.module.scss";
 
 import { getDomainName, miliSecToTime } from "../../../utils";
 
 import Text from "../../atoms/Text";
-import NavigationLink from "../NavigationLink";
 import { NewsResponse } from "../../../interfaces";
+import { makeDeferGetApiCall } from "../../../rxjs-methods";
 
 interface Props {
   subUrl: string;
@@ -20,12 +18,12 @@ const NewestCard = ({ subUrl, index }: Props) => {
   const [cardLoader, setCardLoader] = useState<boolean>(true);
 
   useEffect(() => {
-    const subscription = defer(() =>
-      fetch(subUrl).then((res) => res.json())
-    ).subscribe((resp: NewsResponse) => {
-      setNews(resp);
-      setCardLoader(false);
-    });
+    const subscription = makeDeferGetApiCall(subUrl).subscribe(
+      (resp: NewsResponse) => {
+        setNews(resp);
+        setCardLoader(false);
+      }
+    );
 
     return () => {
       subscription.unsubscribe();
