@@ -48,3 +48,7 @@ export const getPageFromQueryParam = (
   const queryValue = Number(makeQueryParams(urlSearch).get(searchObjKey));
   return queryValue ? queryValue : 1;
 };
+
+export const makeGetRequest = (url: string) => {
+  return fetch(url).then((res) => res.json());
+};

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { defer } from "rxjs";
-
 // Routing
 import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
+import { makeDeferGetApiCall } from "../rxjs-methods";
 import { spliceArray, getPageFromQueryParam } from "../utils";
-import { BASE_SUB_URL, BASE_URL, API } from "../config";
+import { BASE_SUB_URL, API } from "../config";
 
 interface ParamTypes {
   search?: {
@@ -27,13 +26,13 @@ const Home = () => {
   let startSplice = (currentPage - 1) * 30;
 
   useEffect(() => {
-    const subscription = defer(() =>
-      fetch(API.news).then((res) => res.json())
-    ).subscribe((resp) => {
-      setIdArray(resp);
-      setPageLoader(false);
-      setTotal(Math.ceil(resp.length / 30));
-    });
+    const subscription = makeDeferGetApiCall(API.news).subscribe(
+      (resp: any) => {
+        setIdArray(resp);
+        setPageLoader(false);
+        setTotal(Math.ceil(resp.length / 30));
+      }
+    );
 
     return () => {
       subscription.unsubscribe();
