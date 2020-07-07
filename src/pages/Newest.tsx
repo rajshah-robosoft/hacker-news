@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 
 import CardsContainer from "../components/organisms/CardsContainer";
 import { spliceArray, getPageFromQueryParam } from "../utils";
-import { BASE_SUB_URL, BASE_URL } from "../config";
+import { BASE_SUB_URL, BASE_URL, API } from "../config";
 
 interface ParamTypes {
   search?: {
@@ -28,7 +28,7 @@ const Newest = () => {
 
   useEffect(() => {
     const subscription = defer(() =>
-      fetch(`${BASE_URL}/newstories.json`).then((res) => res.json())
+      fetch(API.newest).then((res) => res.json())
     ).subscribe((resp) => {
       setIdArray(resp);
       setPageLoader(false);
